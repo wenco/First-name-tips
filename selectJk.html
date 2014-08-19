@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>下拉框按键快速定位</title>
+        <style type="text/css">
+			body{ padding:0; margin:0; ; width:100%;  position:absolute; top:0; left:0; text-align:left; font-family:"Microsoft YaHei"; font-size: 12px;}
+            dl{ width: 160px; height:30px; line-height:30px; text-indent: 10px; border: 1px #ccc solid; margin: 100px 0 0 300px;}
+            dd{ display: none; border: 1px #ccc solid; width: 100%; margin-left: -1px; border-top: 0;}
+           .dq{background: #ccc;}
+        </style>
+       
+    </head>
+    <body>
+         <dl class="dl">
+             <dt>标题标题标题</dt>
+             <dd data-nr="a">a内容1</dd>
+             <dd data-nr="b">b内容2</dd>
+             <dd data-nr="c">c内容3</dd>
+             <dd data-nr="d">d内容4</dd>
+             <dd data-nr="e">e内容5</dd>
+             <dd data-nr="f">f内容6</dd>
+             <dd data-nr="g">g内容7</dd>
+             <dd data-nr="f">f内容6</dd>
+             <dd data-nr="g">g内容7</dd>
+             <dd data-nr="f">f内容6</dd>
+         </dl>
+    </body>
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script>
+  $(function() {
+    $(".dl").hover(function() {
+      $(".dl dd").show();
+      $(".dl").attr("data-kg", 1);
+    }, function() {
+      $(".dl dd").hide();
+      $(".dl").attr("data-kg", 0);
+    });
+    $(".dl dd").hover(function() {
+      $(this).addClass("dq");
+    }, function() {
+      $(this).removeClass("dq");
+    });
+    var keys = {};
+    var kit = {};
+    $("body").on("keydown", function(e) {
+      if ($(".dl").attr("data-kg") == 1) {
+        if (e.keyCode > 64 || e.keyCode > 91) {
+          var key = String.fromCharCode(e.keyCode).toLowerCase();
+          keys[key] = $('.dl').find('dd[data-nr="' + key + '"]').length;
+          kit[key] = typeof(kit[key]) === 'undefined' ? 0 : kit[key] + 1;
+          kit[key] = kit[key] >= keys[key] ? 0 : kit[key]
+          $('.dl dd[data-nr="' + key + '"]').eq(kit[key]).addClass('dq').siblings('dd').removeClass('dq');
+        }
+      }
+    });
+  });
+</script>
+</html>
